@@ -10,6 +10,7 @@ import json
 DEFAULT_XAPI_ADDRESS= 'xapi.xtb.com'
 DEFUALT_XAPI_STREAMING_PORT = 5125
 DEFAULT_XAPI_PORT= 5124
+API_SEND_TIMEOUT = 100
 
 
 url=''
@@ -24,12 +25,15 @@ json_command = {"command": "login",
 
 
 
-
 def main():
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     my_socket.connect((DEFAULT_XAPI_ADDRESS, DEFUALT_XAPI_STREAMING_PORT))
-	api_command= json.dumps(json_command)
-	print('...')
+    api_command= json.dumps(json_command)
+    api_command_encoded = api_command.encode('utf-8')
+    
+    
+    print('...')
+    
     
    
 
