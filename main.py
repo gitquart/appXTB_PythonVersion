@@ -1,3 +1,9 @@
+"""
+main.py
+The xAPIConnector.py works well but it's a wrapper, so this main.py
+file will aim to send any API command described in http://developers.xstore.pro/documentation/#introduction
+"""
+
 import socket
 import json
 
@@ -7,21 +13,31 @@ DEFAULT_XAPI_PORT= 5124
 
 
 url=''
-json_to_send = {
-	"command": "login",
-	"arguments": {
-		"userId": "12181707",
-		"password": "xoh17643",
-        "appId": ""
-	}
-}
-
-data = json.dumps(json_to_send)
+json_command = {"command": "login",
+	            "arguments": {
+		                "userId": "12181707",
+		                "password": "xoh17643",
+                        "appId": "",
+		                "appName": ""
+	                      }
+	            }
 
 
-my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-my_socket.connect((DEFAULT_XAPI_ADDRESS, DEFUALT_XAPI_STREAMING_PORT))
-my_socket.sendall(bytes(data,encoding='utf-8'))
-res=my_socket.recv(1024)
-print(res.decode("utf-8"))
 
+
+def main():
+    my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    my_socket.connect((DEFAULT_XAPI_ADDRESS, DEFUALT_XAPI_STREAMING_PORT))
+	api_command= json.dumps(json_command)
+	print('...')
+    
+   
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()	
