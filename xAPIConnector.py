@@ -48,6 +48,7 @@ class TransactionType(object):
     ORDER_MODIFY = 3
     ORDER_DELETE = 4
 
+#JsonSocket
 class JsonSocket(object):
     def __init__(self, address, port, encrypt = False):
         self._ssl = encrypt 
@@ -153,8 +154,10 @@ class JsonSocket(object):
     address = property(_get_address, _set_address, doc='read only property socket address')
     port = property(_get_port, _set_port, doc='read only property socket port')
     encrypt = property(_get_encrypt, _set_encrypt, doc='read only property socket port')
-    
-    
+
+#Fin JsonSocket    
+
+#Inicio APIClient
 class APIClient(JsonSocket):
     def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFAULT_XAPI_PORT, encrypt=True):
         super(APIClient, self).__init__(address, port, encrypt)
@@ -171,6 +174,9 @@ class APIClient(JsonSocket):
     def commandExecute(self,commandName, arguments=None):
         return self.execute(baseCommand(commandName, arguments))
 
+#Fin APIClient
+
+#Inicio APIStreamClient
 class APIStreamClient(JsonSocket):
     def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True, ssId=None, 
                  tickFun=None, tradeFun=None, balanceFun=None, tradeStatusFun=None, profitFun=None, newsFun=None):
@@ -262,6 +268,7 @@ class APIStreamClient(JsonSocket):
     def unsubscribeNews(self):
         self.execute(dict(command='stopNews', streamSessionId=self._ssId))
 
+# Fin APIStreamClient
 
 # Command templates
 def baseCommand(commandName, arguments=None):
