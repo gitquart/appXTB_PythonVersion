@@ -77,6 +77,7 @@ class JsonSocket(object):
         return False
 
     def _sendObj(self, obj):
+        logger.info(obj)
         msg = json.dumps(obj)
         self._waitingSend(msg)
 
@@ -85,7 +86,7 @@ class JsonSocket(object):
             sent = 0
             msg = msg.encode('utf-8')
             while sent < len(msg):
-                sent += self.conn.send(msg[sent:])
+                sent += self.socket.send(msg[sent:])
                 logger.info('Sent: ' + str(msg))
                 time.sleep(API_SEND_TIMEOUT/1000)
 
@@ -93,7 +94,7 @@ class JsonSocket(object):
         if not self.socket:
             raise RuntimeError("socket connection broken")
         while True:
-            char = self.conn.recv(bytesSize).decode()
+            char = self.socket.recv(bytesSize).decode()
             self._receivedData += char
             try:
                 (resp, size) = self._decoder.raw_decode(self._receivedData)
