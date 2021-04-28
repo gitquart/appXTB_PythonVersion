@@ -35,7 +35,6 @@ def sendXTBCommand(my_socket,api_command):
         api_command_encoded = api_command.encode('utf-8')
         while sent < len(api_command_encoded):
             sent += my_socket.send(api_command_encoded[sent:])
-            print('Sent from my code:',api_command_encoded)
             time.sleep(API_SEND_TIMEOUT/1000)
         if sent>0:
             return True   
@@ -61,16 +60,26 @@ def receiveXTBAnswer(my_socket):
     return resp    
 
 
+def getStreamSessionId():
+    ssl_socket=getSocket()
+    api_command= json.dumps(json_command)
+    bRes=sendXTBCommand(ssl_socket,api_command)
+    res=''
+    try:
+        if bRes:
+            respXTB=receiveXTBAnswer(ssl_socket)
+            res=respXTB['streamSessionId']
+    except Exception as e:
+        res=e
+    return res    
+
 
 
 
 def main():
-    ssl_socket=getSocket()
-    api_command= json.dumps(json_command)
-    bRes=sendXTBCommand(ssl_socket,api_command)
-    if bRes:
-        respXTB=receiveXTBAnswer(ssl_socket)
-        print(respXTB)
+    #Get the StreamSessionID
+    ssid=getStreamSessionId()
+    print(ssid)
         
         
     
