@@ -3,7 +3,7 @@ main.py
 The xAPIConnector.py works well but it's a wrapper, so this main.py
 file will aim to send any API command described in http://developers.xstore.pro/documentation/#introduction
 """
-
+from threading import Thread
 import socket
 import json
 import time
@@ -13,6 +13,7 @@ DEFAULT_XAPI_ADDRESS= 'xapi.xtb.com'
 DEFAULT_XAPI_STREAMING_PORT = 5125
 DEFAULT_XAPI_PORT= 5124
 API_SEND_TIMEOUT = 100
+RUNNING=False
 
 json_login_cmd = {"command": "login",
 	            "arguments": {
@@ -40,12 +41,31 @@ json_STREAMING_cmd={
 
 
 
-def getSocket(port):
-    my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    my_socket.connect((DEFAULT_XAPI_ADDRESS,port))
+def getSocket(op):
+    """
+    getSocket
+    params:
+        op=0 is No streaming, 1 is streaming
+    """
+    if op==0:
+        my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        my_socket.connect((DEFAULT_XAPI_ADDRESS,DEFAULT_XAPI_PORT))
+    else:
+        my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        my_socket.connect((DEFAULT_XAPI_ADDRESS,DEFAULT_XAPI_STREAMING_PORT))
+        global RUNNING
+        RUNNING=True
+        objThread=Thread(target=readStream, args=())
+        objThread.setDaemon(True)
+        objThread.start()
+
     my_socket=ssl.wrap_socket(my_socket)
     return my_socket
 
+def readStream():
+    global RUNNING
+    while RUNNING:
+        print('ReadStream...',time.time())
 
 def sendXTBCommand(my_socket,api_command,op,ssid=''):
     '''
@@ -115,30 +135,30 @@ def printJSONtoFile(fileName,content):
 def main():
     #Get socket (and it's open already)
     
-    ssl_socket_no_streaming=getSocket(DEFAULT_XAPI_PORT)
+    ssl_socket_no_streaming=getSocket(0)
     ssid=getStreamSessionId(ssl_socket_no_streaming)
     
     #NO STREAMING
     #Example of how to call a NO STREAMING method (Retrieving trading data : http://developers.xstore.pro/documentation/#retrieving-trading-data)
-    
+    """
     res=sendXTBCommand(ssl_socket_no_streaming,json_NO_STREAMING_cmd,0)
     if res:
         xtbRes=receiveXTBAnswer(ssl_socket_no_streaming)
         printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getSymbol.json',xtbRes)
+    """    
        
-    """
+    
     #STREAMING
-    ssl_socket_streaming=getSocket(DEFAULT_XAPI_STREAMING_PORT)  
+    ssl_socket_streaming=getSocket(1)  
     res=sendXTBCommand(ssl_socket_streaming,json_STREAMING_cmd,1,ssid)
     if res:
         xtbRes=receiveXTBAnswer(ssl_socket_streaming)
         print(xtbRes)
-    """    
 
 
 
     ssl_socket_no_streaming.close()  
-    #ssl_socket_streaming.close()  
+    ssl_socket_streaming.close()  
 
     
 
