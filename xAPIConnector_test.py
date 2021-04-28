@@ -345,7 +345,7 @@ def main():
     sclient.subscribeProfits()
 
     # this is an example, make it run for 5 seconds
-    time.sleep(5)
+    time.sleep(15)
     
     # gracefully close streaming socket
     sclient.disconnect()
