@@ -17,7 +17,7 @@ API_SEND_TIMEOUT = 100
 url=''
 json_command = {"command": "login",
 	            "arguments": {
-		                "userId": "12181707",
+		                "userId": 12181707,
 		                "password": "xoh17643",
 		                "appName": ""
 	                      }
@@ -34,6 +34,7 @@ def main():
         api_command_encoded = api_command.encode('utf-8')
         while sent < len(api_command_encoded):
             sent += my_socket.send(api_command_encoded[sent:])
+            print('Sent from my code:',api_command_encoded)
             time.sleep(API_SEND_TIMEOUT/1000)
     
     receivedData=''
