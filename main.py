@@ -98,7 +98,7 @@ def main():
     res=sendXTBCommand(ssl_socket,json_getAllSymbols)
     if res:
         xtbRes=receiveXTBAnswer(ssl_socket)
-        printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getAllSymbols.txt',xtbRes)
+        printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getAllSymbols.json',xtbRes)
         
 
     ssl_socket.close()    
