@@ -24,7 +24,10 @@ json_login_cmd = {"command": "login",
 
 json_NO_STREAMING_cmd={
 
-    "command": "getCalendar"
+    "command": "getSymbol",
+	"arguments": {
+		"symbol": "OIL"
+	}
 }
 
 json_STREAMING_cmd={
@@ -117,24 +120,25 @@ def main():
     
     #NO STREAMING
     #Example of how to call a NO STREAMING method (Retrieving trading data : http://developers.xstore.pro/documentation/#retrieving-trading-data)
-    """
-    res=sendXTBCommand(ssl_socket_no_streaming,json_NO_STREAMING_cmd)
+    
+    res=sendXTBCommand(ssl_socket_no_streaming,json_NO_STREAMING_cmd,0)
     if res:
         xtbRes=receiveXTBAnswer(ssl_socket_no_streaming)
-        printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getCalendar.json',xtbRes)
-    """    
-
+        printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getSymbol.json',xtbRes)
+       
+    """
     #STREAMING
     ssl_socket_streaming=getSocket(DEFAULT_XAPI_STREAMING_PORT)  
     res=sendXTBCommand(ssl_socket_streaming,json_STREAMING_cmd,1,ssid)
     if res:
         xtbRes=receiveXTBAnswer(ssl_socket_streaming)
         print(xtbRes)
+    """    
 
 
 
     ssl_socket_no_streaming.close()  
-    ssl_socket_streaming.close()  
+    #ssl_socket_streaming.close()  
 
     
 
