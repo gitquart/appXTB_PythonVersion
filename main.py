@@ -14,13 +14,19 @@ DEFUALT_XAPI_STREAMING_PORT = 5125
 DEFAULT_XAPI_PORT= 5124
 API_SEND_TIMEOUT = 100
 
-json_command = {"command": "login",
+json_login = {"command": "login",
 	            "arguments": {
 		                "userId": 12181707,
 		                "password": "xoh17643",
 		                "appName": ""
 	                      }
 	            }
+
+json_getAllSymbols={
+
+    "command": "getAllSymbols"
+}
+
 
 
 def getSocket():
@@ -30,6 +36,7 @@ def getSocket():
     return my_socket
 
 def sendXTBCommand(my_socket,api_command):
+    api_command= json.dumps(api_command)
     if my_socket:
         sent = 0
         api_command_encoded = api_command.encode('utf-8')
@@ -57,41 +64,46 @@ def receiveXTBAnswer(my_socket):
                 break
         except ValueError as e:
             continue
-    return resp    
+    return resp
+    
 
 
-def getStreamSessionId():
-    ssl_socket=getSocket()
-    api_command= json.dumps(json_command)
-    bRes=sendXTBCommand(ssl_socket,api_command)
+#getStreamSessionId gets the StreamingSessionID
+def getStreamSessionId(ssl_socket):
+    bRes=sendXTBCommand(ssl_socket,json_login)
     res=''
     try:
         if bRes:
             respXTB=receiveXTBAnswer(ssl_socket)
             res=respXTB['streamSessionId']
+            print('The ID Stream Session is ',res)
     except Exception as e:
         res=e
-    return res    
+    return res 
 
+def printJSONtoFile(fileName,content):
+    print('Printing JSON...')
+    with open(fileName, 'w') as outfile:
+        json.dump(content, outfile)
 
 
 
 def main():
-    #Get the StreamSessionID
-    ssid=getStreamSessionId()
-    print(ssid)
+    #Get socket (and it's open already)
+    
+    ssl_socket=getSocket()
+    ssid=getStreamSessionId(ssl_socket)
+    
+
+    res=sendXTBCommand(ssl_socket,json_getAllSymbols)
+    if res:
+        xtbRes=receiveXTBAnswer(ssl_socket)
+        printJSONtoFile('C:\\Users\\1098350515\\Desktop\\getAllSymbols.txt',xtbRes)
         
-        
+
+    ssl_socket.close()    
+
     
-    
-    
-   
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()	
