@@ -178,17 +178,10 @@ class APIClient(JsonSocket):
 
 #Inicio APIStreamClient
 class APIStreamClient(JsonSocket):
-    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True, ssId=None, 
-                 tickFun=None, tradeFun=None, balanceFun=None, tradeStatusFun=None, profitFun=None, newsFun=None):
+    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True, ssId=None):
         super(APIStreamClient, self).__init__(address, port, encrypt)
         self._ssId = ssId
 
-        self._tickFun = tickFun
-        self._tradeFun = tradeFun
-        self._balanceFun = balanceFun
-        self._tradeStatusFun = tradeStatusFun
-        self._profitFun = profitFun
-        self._newsFun = newsFun
         
         if(not self.connect()):
             raise Exception("Cannot connect to streaming on " + address + ":" + str(port) + " after " + str(API_MAX_CONN_TRIES) + " retries")
@@ -202,18 +195,7 @@ class APIStreamClient(JsonSocket):
         while (self._running):
                 msg = self._readObj()
                 logger.info("Stream received: " + str(msg))
-                if (msg["command"]=='tickPrices'):
-                    self._tickFun(msg)
-                elif (msg["command"]=='trade'):
-                    self._tradeFun(msg)
-                elif (msg["command"]=="balance"):
-                    self._balanceFun(msg)
-                elif (msg["command"]=="tradeStatus"):
-                    self._tradeStatusFun(msg)
-                elif (msg["command"]=="profit"):
-                    self._profitFun(msg)
-                elif (msg["command"]=="news"):
-                    self._newsFun(msg)
+               
     
     def disconnect(self):
         self._running = False
@@ -280,30 +262,6 @@ def loginCommand(userId, password, appName=''):
     return baseCommand('login', dict(userId=userId, password=password, appName=appName))
 
 
-
-# example function for processing ticks from Streaming socket
-def procTickExample(msg): 
-    print("TICK: ", msg)
-
-# example function for processing trades from Streaming socket
-def procTradeExample(msg): 
-    print("TRADE: ", msg)
-
-# example function for processing trades from Streaming socket
-def procBalanceExample(msg): 
-    print("BALANCE: ", msg)
-
-# example function for processing trades from Streaming socket
-def procTradeStatusExample(msg): 
-    print("TRADE STATUS: ", msg)
-
-# example function for processing trades from Streaming socket
-def procProfitExample(msg): 
-    print("PROFIT: ", msg)
-
-# example function for processing news from Streaming socket
-def procNewsExample(msg): 
-    print("NEWS: ", msg)
     
 
 def main():
@@ -328,11 +286,11 @@ def main():
     ssid = loginResponse['streamSessionId']
     
     # second method of invoking commands
-    resp = client.commandExecute('getAllSymbols')
+    #resp = client.commandExecute('getAllSymbols')
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = APIStreamClient(ssId=ssid, tickFun=procTickExample, tradeFun=procTradeExample, profitFun=procProfitExample, tradeStatusFun=procTradeStatusExample)
+    sclient = APIStreamClient(ssId=ssid)
     
     # subscribe for trades
     sclient.subscribeTrades()

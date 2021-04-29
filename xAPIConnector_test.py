@@ -5,6 +5,38 @@ import time
 import ssl
 from threading import Thread
 
+#Commands
+
+json_login_cmd = {"command": "login",
+	            "arguments": {
+		                "userId": 12181707,
+		                "password": "xoh17643",
+		                "appName": ""
+	                      }
+	            }
+
+json_NO_STREAMING_cmd={
+
+    "command": "getSymbol",
+	"arguments": {
+		"symbol": "OIL"
+	}
+}
+
+json_STREAMING_cmd={
+	"command": "getTickPrices",
+	"streamSessionId": "",
+	"symbol": "EURUSD",
+	"minArrivalTime": 5000,
+	"maxLevel": 2
+     }
+
+json_STREAMING_cmd_2={
+	"command": "getNews",
+	"streamSessionId": ""
+     }     
+
+
 # set to true on debug environment only
 DEBUG = True
 
@@ -172,24 +204,14 @@ class APIClient(JsonSocket):
     def disconnect(self):
         self.close()
         
-    def commandExecute(self,commandName, arguments=None):
-        return self.execute(baseCommand(commandName, arguments))
 
 #Fin APIClient
 
 #Inicio APIStreamClient
 class APIStreamClient(JsonSocket):
-    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True, ssId=None, 
-                 tickFun=None, tradeFun=None, balanceFun=None, tradeStatusFun=None, profitFun=None, newsFun=None):
+    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True):
         super(APIStreamClient, self).__init__(address, port, encrypt)
-        self._ssId = ssId
 
-        self._tickFun = tickFun
-        self._tradeFun = tradeFun
-        self._balanceFun = balanceFun
-        self._tradeStatusFun = tradeStatusFun
-        self._profitFun = profitFun
-        self._newsFun = newsFun
         
         if(not self.connect()):
             raise Exception("Cannot connect to streaming on " + address + ":" + str(port) + " after " + str(API_MAX_CONN_TRIES) + " retries")
@@ -203,19 +225,7 @@ class APIStreamClient(JsonSocket):
         while (self._running):
                 msg = self._readObj()
                 logger.info("Stream received: " + str(msg))
-                if (msg["command"]=='tickPrices'):
-                    self._tickFun(msg)
-                elif (msg["command"]=='trade'):
-                    self._tradeFun(msg)
-                elif (msg["command"]=="balance"):
-                    self._balanceFun(msg)
-                elif (msg["command"]=="tradeStatus"):
-                    self._tradeStatusFun(msg)
-                elif (msg["command"]=="profit"):
-                    self._profitFun(msg)
-                elif (msg["command"]=="news"):
-                    self._newsFun(msg)
-    
+               
     def disconnect(self):
         self._running = False
         self._t.join()
@@ -224,87 +234,26 @@ class APIStreamClient(JsonSocket):
     def execute(self, dictionary):
         self._sendObj(dictionary)
 
-    def subscribePrice(self, symbol):
-        self.execute(dict(command='getTickPrices', symbol=symbol, streamSessionId=self._ssId))
+    #Subscribe method will be always for Streaming, then an Streaming ID is required
+    def subscribe(self,command,ssid):
+        #command must be a dictionary already, not string.
+        command['streamSessionId']=ssid
+        #command=json.dumps(command)
+        self.execute(command)
         
-    def subscribePrices(self, symbols):
-        for symbolX in symbols:
-            self.subscribePrice(symbolX)
-    
-    def subscribeTrades(self):
-        self.execute(dict(command='getTrades', streamSessionId=self._ssId))
+    def unsubscribe(self,command):
+        self.execute(command)
         
-    def subscribeBalance(self):
-        self.execute(dict(command='getBalance', streamSessionId=self._ssId))
-
-    def subscribeTradeStatus(self):
-        self.execute(dict(command='getTradeStatus', streamSessionId=self._ssId))
-
-    def subscribeProfits(self):
-        self.execute(dict(command='getProfits', streamSessionId=self._ssId))
-
-    def subscribeNews(self):
-        self.execute(dict(command='getNews', streamSessionId=self._ssId))
-
-
-    def unsubscribePrice(self, symbol):
-        self.execute(dict(command='stopTickPrices', symbol=symbol, streamSessionId=self._ssId))
-        
-    def unsubscribePrices(self, symbols):
-        for symbolX in symbols:
-            self.unsubscribePrice(symbolX)
-    
-    def unsubscribeTrades(self):
-        self.execute(dict(command='stopTrades', streamSessionId=self._ssId))
-        
-    def unsubscribeBalance(self):
-        self.execute(dict(command='stopBalance', streamSessionId=self._ssId))
-
-    def unsubscribeTradeStatus(self):
-        self.execute(dict(command='stopTradeStatus', streamSessionId=self._ssId))
-
-    def unsubscribeProfits(self):
-        self.execute(dict(command='stopProfits', streamSessionId=self._ssId))
-
-    def unsubscribeNews(self):
-        self.execute(dict(command='stopNews', streamSessionId=self._ssId))
-
+   
 # Fin APIStreamClient
 
-# Command templates
-def baseCommand(commandName, arguments=None):
-    if arguments==None:
-        arguments = dict()
-    return dict([('command', commandName), ('arguments', arguments)])
 
-def loginCommand(userId, password, appName=''):
-    return baseCommand('login', dict(userId=userId, password=password, appName=appName))
+def printJSONtoFile(fileName,content):
+    print('Printing JSON...')
+    with open(fileName, 'w') as outfile:
+        json.dump(content, outfile)
 
 
-
-# example function for processing ticks from Streaming socket
-def procTickExample(msg): 
-    print("TICK: ", msg)
-
-# example function for processing trades from Streaming socket
-def procTradeExample(msg): 
-    print("TRADE: ", msg)
-
-# example function for processing trades from Streaming socket
-def procBalanceExample(msg): 
-    print("BALANCE: ", msg)
-
-# example function for processing trades from Streaming socket
-def procTradeStatusExample(msg): 
-    print("TRADE STATUS: ", msg)
-
-# example function for processing trades from Streaming socket
-def procProfitExample(msg): 
-    print("PROFIT: ", msg)
-
-# example function for processing news from Streaming socket
-def procNewsExample(msg): 
-    print("NEWS: ", msg)
     
 
 def main():
@@ -317,8 +266,8 @@ def main():
     client = APIClient()
     
     # connect to RR socket, login
-    loginResponse = client.execute(loginCommand(userId=userId, password=password))
-    logger.info(str(loginResponse)) 
+    loginResponse = client.execute(json_login_cmd)
+    
 
     # check if user logged in correctly
     if(loginResponse['status'] == False):
@@ -328,24 +277,23 @@ def main():
     # get ssId from login response
     ssid = loginResponse['streamSessionId']
     
-    # second method of invoking commands
-    resp = client.commandExecute('getAllSymbols')
+    
+    #resp = client.execute(json_NO_STREAMING_cmd)
+    #print(resp)
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = APIStreamClient(ssId=ssid, tickFun=procTickExample, tradeFun=procTradeExample, profitFun=procProfitExample, tradeStatusFun=procTradeStatusExample)
+    sclient = APIStreamClient()
     
     # subscribe for trades
-    sclient.subscribeTrades()
-    
-    # subscribe for prices
-    sclient.subscribePrices(['EURUSD', 'EURGBP', 'EURJPY'])
+    sclient.subscribe(json_STREAMING_cmd,ssid)
 
-    # subscribe for profits
-    sclient.subscribeProfits()
+
+    
+
 
     # this is an example, make it run for 5 seconds
-    time.sleep(15)
+    time.sleep(10)
     
     # gracefully close streaming socket
     sclient.disconnect()
@@ -356,3 +304,6 @@ def main():
     
 if __name__ == "__main__":
     main()	
+
+
+
