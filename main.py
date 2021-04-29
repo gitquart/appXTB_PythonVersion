@@ -1,36 +1,7 @@
+import json
 import time
-import API_XTB as xtb
-
-
-#Commands
-
-json_login_cmd = {"command": "login",
-	            "arguments": {
-		                "userId": 12181707,
-		                "password": "xoh17643",
-		                "appName": ""
-	                      }
-	            }
-
-json_NO_STREAMING_cmd={
-
-    "command": "getSymbol",
-	"arguments": {
-		"symbol": "OIL"
-	}
-}
-
-json_STREAMING_cmd={
-	"command": "getTickPrices",
-	"streamSessionId": "",
-	"symbol": "EURUSD"
-     }
-
-json_STREAMING_cmd_2={
-	"command": "getNews",
-	"streamSessionId": ""
-     }     
-
+from API_XTB import *
+from utils import *
 
 
 def main():
@@ -40,10 +11,10 @@ def main():
     password = "xoh17643"
 
     # create & connect to RR socket
-    client = xtb.APIClient()
+    client = APIClient()
     
     # connect to RR socket, login
-    loginResponse = client.execute(json_login_cmd)
+    loginResponse = client.execute(openFile('xtb_login.json'))
     
 
     # check if user logged in correctly
@@ -55,15 +26,15 @@ def main():
     ssid = loginResponse['streamSessionId']
     
     
-    #resp = client.execute(json_NO_STREAMING_cmd)
-    #print(resp)
+    resp = client.execute(openFile('cmd_no_streaming.json'))
+    print(resp)
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = xtb.APIStreamClient(ssID=ssid)
+    sclient = APIStreamClient(ssID=ssid)
     
     # subscribe for trades
-    sclient.subscribe(json_STREAMING_cmd)
+    sclient.subscribe(openFile('cmd_streaming.json'))
 
 
     

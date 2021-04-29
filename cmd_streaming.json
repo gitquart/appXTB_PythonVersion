@@ -1,0 +1,5 @@
+{
+	"command": "getTickPrices",
+	"streamSessionId": "",
+	"symbol": "EURUSD"
+     }
