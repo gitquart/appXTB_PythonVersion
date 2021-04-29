@@ -4,6 +4,9 @@ class Data(object):
         self.name=name
         self.age=age
 
+    def suma(self,a,b):
+        return a+b    
+
     def showAge(self):
         print('Your age is ',self.age) 
         self.__ImPrivate()
@@ -13,7 +16,16 @@ class Data(object):
         self.age=newAge     
 
     def __ImPrivate(self):
-        print('I am a private method')    
+        print('I am a private method') 
+
+class Calc(Data):
+    def __init__(self,numA,numB):
+        self.num1=numA
+        self.num2=numB
+
+    def sumaCalc(self):
+        return super(Calc,self).suma(self.num1,self.num2)       
+                
 
 def main():
     print('Before:')
@@ -22,6 +34,10 @@ def main():
     objData.updateData('Uly2','31')   
     print('After')
     objData.showAge() 
+    oCalc= Calc(9,6)
+    res= oCalc.sumaCalc()
+    print(str(res))
+    
     
 
 
