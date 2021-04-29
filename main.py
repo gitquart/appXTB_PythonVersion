@@ -36,10 +36,6 @@ def main():
     # subscribe for trades
     sclient.subscribe(openFile('cmd_streaming.json'))
 
-
-    
-
-
     # this is an example, make it run for 5 seconds
     time.sleep(10)
     
