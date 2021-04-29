@@ -50,7 +50,7 @@ class TransactionType(object):
 
 #JsonSocket
 class JsonSocket(object):
-    def __init__(self, address, port, encrypt = False):
+    def __init__(self,address, port, encrypt = False):
         self._ssl = encrypt 
         if self._ssl != True:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -161,7 +161,7 @@ class JsonSocket(object):
 #Inicio APIClient
 class APIClient(JsonSocket):
     def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFAULT_XAPI_PORT, encrypt=True):
-        super(APIClient, self).__init__(address, port, encrypt)
+        super(APIClient,self).__init__(address, port, encrypt)
         if(not self.connect()):
             raise Exception("Cannot connect to " + address + ":" + str(port) + " after " + str(API_MAX_CONN_TRIES) + " retries")
 
