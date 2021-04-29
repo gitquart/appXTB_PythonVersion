@@ -26,9 +26,7 @@ json_NO_STREAMING_cmd={
 json_STREAMING_cmd={
 	"command": "getTickPrices",
 	"streamSessionId": "",
-	"symbol": "EURUSD",
-	"minArrivalTime": 5000,
-	"maxLevel": 2
+	"symbol": "EURUSD"
      }
 
 json_STREAMING_cmd_2={
@@ -209,9 +207,10 @@ class APIClient(JsonSocket):
 
 #Inicio APIStreamClient
 class APIStreamClient(JsonSocket):
-    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True):
+    def __init__(self, address=DEFAULT_XAPI_ADDRESS, port=DEFUALT_XAPI_STREAMING_PORT, encrypt=True,ssID=None):
         super(APIStreamClient, self).__init__(address, port, encrypt)
 
+        self._ssid=ssID
         
         if(not self.connect()):
             raise Exception("Cannot connect to streaming on " + address + ":" + str(port) + " after " + str(API_MAX_CONN_TRIES) + " retries")
@@ -235,9 +234,9 @@ class APIStreamClient(JsonSocket):
         self._sendObj(dictionary)
 
     #Subscribe method will be always for Streaming, then an Streaming ID is required
-    def subscribe(self,command,ssid):
+    def subscribe(self,command):
         #command must be a dictionary already, not string.
-        command['streamSessionId']=ssid
+        command['streamSessionId']=self._ssid
         #command=json.dumps(command)
         self.execute(command)
         
@@ -283,10 +282,10 @@ def main():
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = APIStreamClient()
+    sclient = APIStreamClient(ssID=ssid)
     
     # subscribe for trades
-    sclient.subscribe(json_STREAMING_cmd,ssid)
+    sclient.subscribe(json_STREAMING_cmd)
 
 
     
