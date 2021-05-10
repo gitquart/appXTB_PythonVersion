@@ -26,9 +26,6 @@ def main():
     ssid = loginResponse['streamSessionId']
     
     
-    resp = client.execute(openFile('cmd_no_streaming.json'))
-    print(resp)
-    
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
     sclient = APIStreamClient(ssID=ssid)
@@ -38,6 +35,10 @@ def main():
 
     # this is an example, make it run for 5 seconds
     time.sleep(10)
+
+    #sclient.unsubscribe(openFile('cmd_unsubscribe.json'))
+
+    
     
     # gracefully close streaming socket
     sclient.disconnect()

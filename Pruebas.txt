@@ -1,0 +1,3 @@
+Pruebas:
+
+1) Se hizo pruebas lunes 10 mayo y no regresó información (getBalance, GetTrades y Get News) Get candles devolvió pocos registros
