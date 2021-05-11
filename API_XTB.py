@@ -200,6 +200,7 @@ class APIStreamClient(JsonSocket):
         #join waits until the thread has finished work
         #Document: https://www.bogotobogo.com/python/Multithread/python_multithreading_Daemon_join_method_threads.php
         self._t.join()
+        print('The thread :',self._t.name,' has finished!')
         self.close()
 
     def execute(self, dictionary):
