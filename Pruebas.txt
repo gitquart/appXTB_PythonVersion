@@ -1,3 +1,19 @@
 Pruebas:
 
-1) Se hizo pruebas lunes 10 mayo y no regresó información (getBalance, GetTrades y Get News) Get candles devolvió pocos registros
+1) Se hizo pruebas lunes 10 mayo y no regresó información (getBalance, GetTrades y Get News) Get candles devolvió pocos registros (cuenta demo)
+
+
+Cuentas de Judith:
+
+Demo
+_____________
+user: 12125740
+pwd:judith123
+mail: judithe.pichardo.c@gmail.com
+
+
+Real
+____________
+user:1832076
+pwd: Quart2020
+mail: contacto@quart.com.mx
