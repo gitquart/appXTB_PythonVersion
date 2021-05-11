@@ -32,10 +32,13 @@ def main():
     # subscribe for trades
     sclient.subscribe(openFile('cmd_streaming.json'))
 
-    time.sleep(5)
-    print('The time is done.')
+    time.sleep(1800)
 
     #sclient.unsubscribe(openFile('cmd_unsubscribe.json'))
+    
+    print('The time is done.')
+
+    
 
     
     
