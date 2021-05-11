@@ -7,8 +7,7 @@ from utils import *
 def main():
 
     # enter your login credentials here
-    userId = 12181707
-    password = "xoh17643"
+   
 
     # create & connect to RR socket
     client = APIClient()
@@ -33,7 +32,6 @@ def main():
     # subscribe for trades
     sclient.subscribe(openFile('cmd_streaming.json'))
 
-    # this is an example, make it run for 5 seconds
     time.sleep(5)
     print('The time is done.')
 
