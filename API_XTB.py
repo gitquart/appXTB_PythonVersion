@@ -186,7 +186,7 @@ class APIStreamClient(JsonSocket):
             raise Exception("Cannot connect to streaming on " + address + ":" + str(port) + " after " + str(API_MAX_CONN_TRIES) + " retries")
 
         self._running = True
-        self._t = Thread(target=self._readStream, args=())
+        self._t = Thread(name='Daemon_trading',target=self._readStream, args=())
         self._t.setDaemon(True)
         self._t.start()
 
@@ -197,6 +197,8 @@ class APIStreamClient(JsonSocket):
                
     def disconnect(self):
         self._running = False
+        #join waits until the thread has finished work
+        #Document: https://www.bogotobogo.com/python/Multithread/python_multithreading_Daemon_join_method_threads.php
         self._t.join()
         self.close()
 

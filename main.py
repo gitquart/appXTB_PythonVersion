@@ -34,7 +34,7 @@ def main():
     sclient.subscribe(openFile('cmd_streaming.json'))
 
     # this is an example, make it run for 5 seconds
-    time.sleep(600)
+    time.sleep(5)
     print('The time is done.')
 
     #sclient.unsubscribe(openFile('cmd_unsubscribe.json'))
