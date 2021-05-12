@@ -1,7 +1,9 @@
 {
-
-    "command": "getSymbol",
+	"command": "getTickPrices",
 	"arguments": {
-		"symbol": "OIL"
+		"level": 0,
+		"symbols": ["EURUSD"],
+		"timestamp": 1618242636
+		
 	}
 }

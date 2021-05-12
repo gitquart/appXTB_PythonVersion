@@ -27,24 +27,22 @@ def main():
     
     # create & connect to Streaming socket with given ssID
     # and functions for processing ticks, trades, profit and tradeStatus
-    sclient = APIStreamClient(ssID=ssid)
-    
-    sclient.subscribe(openFile('getTrades.json'))
-    sclient.subscribe(openFile('getTickPrices.json'))
-    sclient.subscribe(openFile('getProfits.json'))
 
-    time.sleep(1800)
+    client.execute(openFile('cmd_no_streaming.json'))
+    #sclient = APIStreamClient(ssID=ssid)
+    
+    
+    #sclient.subscribe(openFile('getTickPrices.json'))
+    
+
+    #time.sleep(300)
 
     #sclient.unsubscribe(openFile('cmd_unsubscribe.json'))
     
     print('The time is done.')
-
-    
-
-    
     
     # gracefully close streaming socket
-    sclient.disconnect()
+    #sclient.disconnect()
     
     # gracefully close RR socket
     client.disconnect()
