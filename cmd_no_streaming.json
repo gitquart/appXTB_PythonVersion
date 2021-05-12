@@ -1,9 +1,10 @@
 {
 	"command": "getTickPrices",
 	"arguments": {
-		"level": 0,
+		"level": -1,
 		"symbols": ["EURUSD"],
-		"timestamp": 1618242636
+		"timestamp": 1586704376
+		
 		
 	}
 }
