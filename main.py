@@ -29,8 +29,9 @@ def main():
     # and functions for processing ticks, trades, profit and tradeStatus
     sclient = APIStreamClient(ssID=ssid)
     
-    # subscribe for trades
-    sclient.subscribe(openFile('cmd_streaming.json'))
+    sclient.subscribe(openFile('getTrades.json'))
+    sclient.subscribe(openFile('getTickPrices.json'))
+    sclient.subscribe(openFile('getProfits.json'))
 
     time.sleep(1800)
 
