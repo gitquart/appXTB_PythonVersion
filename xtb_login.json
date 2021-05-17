@@ -1,8 +1,9 @@
 {"command": "login",
     "arguments": {
-            "userId": 12125740,
+            "userId":12246157,
             "password": "judith123",
-            "appId": "",
-		        "appName": ""
+		    "appName": ""
           }
     }
+
+  
