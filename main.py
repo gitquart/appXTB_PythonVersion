@@ -24,9 +24,6 @@ def main():
     # get ssId from login response
     ssid = loginResponse['streamSessionId']
     
-    
-    # create & connect to Streaming socket with given ssID
-    # and functions for processing ticks, trades, profit and tradeStatus
 
     client.execute(openFile('cmd_no_streaming.json'))
     #sclient = APIStreamClient(ssID=ssid)
