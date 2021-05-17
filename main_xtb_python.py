@@ -3,7 +3,7 @@ from XTBApi.api import Client
 # FIRST INIT THE CLIENT
 client = Client()
 # THEN LOGIN
-client.login("1832076", "Quart2020", mode='real')
+client.login("12125740", "judith123", mode='demo')
 # CHECK IF MARKET IS OPEN FOR EURUSD
 client.check_if_market_open(['EURUSD'])
 # BUY ONE VOLUME (FOR EURUSD THAT CORRESPONDS TO 100000 units)
