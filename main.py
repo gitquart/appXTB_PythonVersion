@@ -25,14 +25,14 @@ def main():
     ssid = loginResponse['streamSessionId']
     
 
-    client.execute(openFile('cmd_no_streaming.json'))
-    #sclient = APIStreamClient(ssID=ssid)
+    #client.execute(openFile('cmd_no_streaming.json'))
+    sclient = APIStreamClient(ssID=ssid)
     
     
-    #sclient.subscribe(openFile('getTickPrices.json'))
+    sclient.subscribe(openFile('getTickPrices.json'))
     
 
-    #time.sleep(300)
+    time.sleep(10)
 
     #sclient.unsubscribe(openFile('cmd_unsubscribe.json'))
     
