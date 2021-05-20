@@ -5,7 +5,7 @@ Pruebas:
 
 Cuentas de Judith:
 
-Demo
+Demo (It may expire)
 _____________
 user: 12246157
 pwd:judith123
