@@ -23,12 +23,12 @@ def main():
       
     if bstreaming:
         #Streaming
-        sclient.subscribe(openFile('streaming/getNews.json'))
+        sclient.subscribe(openFile('streaming/getTrades.json'))
         time.sleep(10)
         sclient.disconnect()
     else:    
         #No streaming
-        client.execute(openFile('no_streaming/getNews.json'))
+        client.execute(openFile('no_streaming/getTrades.json'))
         time.sleep(3)
     
     client.disconnect()

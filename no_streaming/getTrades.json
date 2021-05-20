@@ -1,0 +1,6 @@
+{
+	"command": "getTrades",
+	"arguments": {
+		"openedOnly": true
+	}
+}
