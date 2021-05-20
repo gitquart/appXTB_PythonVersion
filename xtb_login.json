@@ -1,7 +1,7 @@
 {"command": "login",
-    "arguments": {
-            "userId":1832076,
-            "password": "Quart2020",
+ "arguments": {
+            "userId":0,
+            "password": "",
 		    "appName": ""
           }
     }
