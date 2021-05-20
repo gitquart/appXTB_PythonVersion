@@ -6,9 +6,10 @@ from utils import *
 
 def main():
 
-    modal='demo'
-    client = APIClient(mode=modal)
+    modal='real'
     bstreaming=False
+    
+    client = APIClient(mode=modal)
     loginResponse = client.execute(openFile('xtb_login.json'))
     
     if(loginResponse['status'] == False):
@@ -22,14 +23,15 @@ def main():
       
     if bstreaming:
         #Streaming
-        sclient.subscribe(openFile('streaming/getTickPrices.json'))
+        sclient.subscribe(openFile('streaming/getNews.json'))
         time.sleep(10)
         sclient.disconnect()
     else:    
         #No streaming
-        client.execute(openFile('no_streaming/getCalendar.json'))
+        client.execute(openFile('no_streaming/getNews.json'))
         time.sleep(3)
-        client.disconnect()
+    
+    client.disconnect()
     
     
     

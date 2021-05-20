@@ -1,0 +1,7 @@
+{
+	"command": "getNews",
+	"arguments": {
+		"end": 0,
+		"start": 1618949124
+	}
+}
