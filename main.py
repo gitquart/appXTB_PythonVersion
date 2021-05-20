@@ -34,7 +34,7 @@ def main():
       
     if bstreaming:
         #Streaming
-        sclient.subscribe(openFile('streaming/getTrades.json'))
+        sclient.subscribe(openFile('streaming/getTradeStatus.json'))
         secs=10
         print('Holding :',str(secs),' secs.')
         time.sleep(secs)
