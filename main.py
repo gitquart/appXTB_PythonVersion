@@ -10,7 +10,7 @@ def main():
    
 
     # create & connect to RR socket
-    client = APIClient()
+    client = APIClient(mode='real')
     
     # connect to RR socket, login
     loginResponse = client.execute(openFile('xtb_login.json'))
@@ -26,7 +26,7 @@ def main():
     
 
     #client.execute(openFile('cmd_no_streaming.json'))
-    sclient = APIStreamClient(ssID=ssid)
+    sclient = APIStreamClient(mode='real',ssID=ssid)
     
     
     sclient.subscribe(openFile('getTickPrices.json'))
