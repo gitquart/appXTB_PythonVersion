@@ -7,7 +7,7 @@ from utils import *
 def main():
 
     modal='real'
-    bstreaming=True
+    bstreaming=False
     userId=''
     pwd=''
     if modal=='demo':
@@ -34,14 +34,14 @@ def main():
       
     if bstreaming:
         #Streaming
-        sclient.subscribe(openFile('streaming/getTradeStatus.json'))
-        secs=10
+        sclient.subscribe(openFile('streaming/getTrades.json'))
+        secs=15
         print('Holding :',str(secs),' secs.')
         time.sleep(secs)
         sclient.disconnect()
     else:    
         #No streaming
-        client.execute(openFile('no_streaming/getTrades.json'))
+        client.execute(openFile('no_streaming/getTickPrices.json'))
         secs=3
         print('Holding :',str(secs),' secs.')
         time.sleep(secs)

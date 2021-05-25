@@ -1,4 +1,5 @@
 {
-	"command": "getTrades",
-	"streamSessionId": ""
+	"command": "getCandles",
+	"streamSessionId": "",
+	"symbol": "EURUSD"
 }

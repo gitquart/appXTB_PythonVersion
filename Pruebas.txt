@@ -23,3 +23,29 @@ ____________
 
 user:12181707
 password: xoh17643
+
+Pruebas 25 mayo 2021
+
+Cuenta Real
+__________________________
+Tipo:Streaming
+---------------
+GetBalance: No
+GetCandles: No
+GetTickPrices: Sí
+GetProfits: No
+GetTrades: No
+
+Tipo:No Streaming
+---------------
+GetTrades: Sí
+getTickPrices: Sí
+
+
+
+Cuenta Demo
+___________________________
+Tipo:Streaming
+GetBalance: No
+GetCandles: No
+GetTrades: No
