@@ -7,7 +7,7 @@ from utils import *
 def main():
 
     modal='real'
-    bstreaming=False
+    bstreaming=True
     userId=''
     pwd=''
     if modal=='demo':
@@ -34,7 +34,7 @@ def main():
       
     if bstreaming:
         #Streaming
-        sclient.subscribe(openFile('streaming/getTrades.json'))
+        sclient.subscribe(openFile('streaming/getBalance.json'))
         secs=15
         print('Holding :',str(secs),' secs.')
         time.sleep(secs)

@@ -4,14 +4,26 @@ import logging
 import time
 import ssl
 from threading import Thread
-
+#Documentation: http://developers.xstore.pro/documentation/
 # set to true on debug environment only
 DEBUG = True
 
+"""
+Furthermore, WebSockets can be used to connect to the API using the following addresses:
+
+wss://ws.xtb.com/demo
+wss://ws.xtb.com/demoStream
+wss://ws.xtb.com/real
+wss://ws.xtb.com/realStream
+"""
+
+
 #default connection properites
 DEFAULT_XAPI_ADDRESS        = 'xapi.xtb.com'
+#DEMO
 DEFAULT_XAPI_PORT_DEMO           = 5124
 DEFUALT_XAPI_STREAMING_PORT_DEMO = 5125
+#REAL
 DEFAULT_XAPI_PORT_REAL           = 5112
 DEFUALT_XAPI_STREAMING_PORT_REAL = 5113
 
