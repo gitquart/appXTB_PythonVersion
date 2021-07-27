@@ -1,0 +1,7 @@
+{
+	"command": "getTradesHistory",
+	"arguments": {
+		"end": 0,
+		"start": 1625025600
+	}
+}
